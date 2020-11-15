@@ -348,3 +348,12 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# VS Code related files
+.vscode/
+
+# Local History for Visual Studio Code
+.history/
+
+# Scala metals related files
+.metals/
