@@ -1,4 +1,6 @@
-**Note: This is just a high level roadmap. Tasks are eventually managed in the [PhotoBomb Github Project](https://github.com/photobombers/photobomb/projects/1)**
+**Note**    
+This is just a high level roadmap.
+Tasks are eventually managed in the [PhotoBomb Github Project](https://github.com/photobombers/photobomb/projects/1).
 
 ## PhotoBomb MVP Task List
 - Create High Level Task List (Done)
