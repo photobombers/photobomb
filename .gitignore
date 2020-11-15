@@ -354,3 +354,6 @@ MigrationBackup/
 
 # Local History for Visual Studio Code
 .history/
+
+# Scala metals related files
+.metals/
