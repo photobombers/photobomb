@@ -13,4 +13,8 @@
     </Content> 
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PhotoBombDetector\PhotoBombDetector.csproj" />
+  </ItemGroup>
+
 </Project>

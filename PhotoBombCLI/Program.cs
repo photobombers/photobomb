@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using McMaster.Extensions.CommandLineUtils;
 
+using PhotoBombDetector;
+
 namespace PhotoBombCLI
 {
     public class Program
@@ -18,6 +20,11 @@ namespace PhotoBombCLI
         [DirectoryExists]
         [Option("-d | --directory <DIRECTORY>", Description = "Directory containing photos to tag identified objects to")]
         public string DirectoryPath { get; }
+
+        [Required]
+        [FileExists]
+        [Option("-m | --model <MODEL_FILEPATH>", Description = "Filetype to the model to be used (e.g. TinyYolo2_model.onnx). ")]
+        public string ModelFilePath { get; }
 
         private string[] GetPhotoFileList(string[] fileList) =>
             fileList.Where(f => (new string[] { ".jpg" }).Contains(Path.GetExtension(f).ToLower())).ToArray();
@@ -101,13 +108,23 @@ namespace PhotoBombCLI
 
         private void OnExecute()
         {
-            var photoFiles = GetPhotoFileList(Directory.GetFiles(DirectoryPath));
-
-            foreach (var file in photoFiles)
+            foreach (var imageItem in Detector.GetObjectList(DirectoryPath, ModelFilePath))
             {
-                Console.WriteLine(file);
-                AddImageTag(file, "DummyTestTag");
+                Console.Write($"Image: {imageItem.ImagePath}; Tag:");
+                foreach(var tag in imageItem.Item2)
+                {
+                    Console.Write($"({tag.Label}@{tag.Score})|");
+                }
+                Console.WriteLine();
             }
+
+            //var photoFiles = GetPhotoFileList(Directory.GetFiles(DirectoryPath));
+
+            //foreach (var file in photoFiles)
+            //{
+            //    Console.WriteLine(file);
+            //    AddImageTag(file, "DummyTestTag");
+            //}
         }
     }
 }
