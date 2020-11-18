@@ -124,6 +124,8 @@ namespace PhotoBombCLI
             string modelFilePath = string.IsNullOrEmpty(ModelFilePath) ? @"./assets/Model/TinyYolo2_model.onnx" : ModelFilePath;
             var detectedObjectList = Detector.GetObjectList(DirectoryPath, modelFilePath);
 
+            Console.WriteLine("Detection Process Complete.");
+
             var photoFiles = GetPhotoFileList(Directory.GetFiles(DirectoryPath));
 
             foreach (var file in photoFiles)
@@ -138,6 +140,8 @@ namespace PhotoBombCLI
                     }
                 }
             }
+
+            Console.WriteLine("Tagging Process Complete.");
         }
     }
 }
