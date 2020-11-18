@@ -45,9 +45,6 @@ namespace PhotoBombDetector
 
         private ITransformer LoadModel(string modelLocation)
         {
-            Console.WriteLine("Read model");
-            Console.WriteLine($"Model location: {modelLocation}");
-            Console.WriteLine($"Default parameters: image size=({ImageNetSettings.imageWidth},{ImageNetSettings.imageHeight})");
             var data = mlContext.Data.LoadFromEnumerable(new List<ImageNetData>());
 
             var pipeline = mlContext.Transforms.LoadImages(outputColumnName: "image", imageFolder: "", inputColumnName: nameof(ImageNetData.ImagePath))
@@ -62,11 +59,6 @@ namespace PhotoBombDetector
 
         private IEnumerable<float[]> PredictDataUsingModel(IDataView testData, ITransformer model)
         {
-            Console.WriteLine($"Images location: {imagesFolder}");
-            Console.WriteLine("");
-            Console.WriteLine("=====Identify the objects in the images=====");
-            Console.WriteLine("");
-
             IDataView scoredData = model.Transform(testData);
 
             IEnumerable<float[]> probabilities = scoredData.GetColumn<float[]>(TinyYoloModelSettings.ModelOutput);

@@ -357,3 +357,6 @@ MigrationBackup/
 
 # Scala metals related files
 .metals/
+
+# VS Local Settings
+/PhotoBombCLI/Properties/launchSettings.json

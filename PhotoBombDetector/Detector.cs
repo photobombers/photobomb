@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.ML;
 
@@ -25,9 +21,9 @@ namespace PhotoBombDetector
             return detectedList;
         }
 
-        public static List<(string ImagePath, List<(string Label, float Score)>)> GetObjectList(string imagesFolder, string modelFilePath)
+        public static List<(string ImageFilename, List<(string Label, float Score)> TagList)> GetObjectList(string imagesFolder, string modelFilePath)
         {
-            List<(string ImagePath, List<(string Label, float Score)>)> result = new List<(string ImagePath, List<(string Label, float Score)>)>();
+            List<(string ImageFilename, List<(string Label, float Score)> TagList)> result = new List<(string ImageFilename, List<(string Label, float Score)> TagList)>();
 
             MLContext mlContext = new MLContext();
 
