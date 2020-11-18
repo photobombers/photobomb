@@ -5,7 +5,8 @@ Tasks are eventually managed in the [PhotoBomb Github Project](https://github.co
 ## PhotoBomb MVP Task List
 - Create High Level Task List (Done)
 - Create Photo Tagging PoC (Done)
-- Create ObjectDetection Library (In Progress)
+- Create ObjectDetection Library (Done)
+- Create Alpha Release for CLI Tool (In Progress)
 - Create PhotoBomb Demo Video - CLI Tool Usage
 
 ### Extra features if there's more time

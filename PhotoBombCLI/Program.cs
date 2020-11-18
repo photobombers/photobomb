@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using McMaster.Extensions.CommandLineUtils;
 
+using PhotoBombDetector;
+
 namespace PhotoBombCLI
 {
     public class Program
@@ -16,8 +18,15 @@ namespace PhotoBombCLI
 
         [Required]
         [DirectoryExists]
-        [Option("-d | --directory <DIRECTORY>", Description = "Directory containing photos to tag identified objects to")]
+        [Option("-d | --directory <DIRECTORY>", Description = "[Required] Directory containing photos to tag identified objects to")]
         public string DirectoryPath { get; }
+
+        [FileExists]
+        [Option("-m | --model <MODEL_FILEPATH>", Description = "File path to the model to be used. Default will use ./assets/Model/TinyYolo2_model.onnx")]
+        public string ModelFilePath { get; }
+
+        [Option("-c | --confidence <MINUMUM_CONFIDENCE_SCORE>", Description = "Minimum confidence score (0 to 1). Default is 0.6")]
+        public float MinimumConfidence { get; } = 0.6f;
 
         private string[] GetPhotoFileList(string[] fileList) =>
             fileList.Where(f => (new string[] { ".jpg" }).Contains(Path.GetExtension(f).ToLower())).ToArray();
@@ -99,14 +108,35 @@ namespace PhotoBombCLI
             }
         }
 
+
+        public static string GetAbsolutePath(string relativePath)
+        {
+            FileInfo _dataRoot = new FileInfo(typeof(Program).Assembly.Location);
+            string assemblyFolderPath = _dataRoot.Directory.FullName;
+
+            string fullPath = Path.Combine(assemblyFolderPath, relativePath);
+
+            return fullPath;
+        }
+
         private void OnExecute()
         {
+            string modelFilePath = string.IsNullOrEmpty(ModelFilePath) ? @"./assets/Model/TinyYolo2_model.onnx" : ModelFilePath;
+            var detectedObjectList = Detector.GetObjectList(DirectoryPath, modelFilePath);
+
             var photoFiles = GetPhotoFileList(Directory.GetFiles(DirectoryPath));
 
             foreach (var file in photoFiles)
             {
-                Console.WriteLine(file);
-                AddImageTag(file, "DummyTestTag");
+                var tagList = detectedObjectList.Where(imageItem => imageItem.ImageFilename == Path.GetFileName(file))?.FirstOrDefault().TagList;
+
+                foreach (var tag in tagList)
+                {
+                    if (tag.Score >= MinimumConfidence)
+                    {
+                        AddImageTag(file, tag.Label);
+                    }
+                }
             }
         }
     }
